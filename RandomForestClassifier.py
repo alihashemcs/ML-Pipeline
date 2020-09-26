@@ -19,8 +19,6 @@ with open('dataCSV1.csv') as dataCSV1:
                 #print(f'Column names are {", ".join(row)}')
                 line_count += 1
             else:
-                #print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
-                #z.append([row[1],row[2],row[4],row[5]])
                 v.insert(count,[row[1],row[2],row[4],row[5]])
                 line_count += 1
                 count += 1
@@ -36,6 +34,8 @@ for i in range(0,400):
 #print(z)
 y = np.array(z,dtype=object)
 #print(y)
+
+y = np.zeros(400,dtype=np.int64)
 
 clf.fit(X,y)
 #print(clf.fit(X,y))
