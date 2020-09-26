@@ -1,4 +1,8 @@
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.feature_extraction.text import CountVectorizer
 import csv
 from array import *
 from numpy import *
@@ -26,18 +30,19 @@ with open('dataCSV1.csv') as dataCSV1:
     #print(f'Processed {line_count-1} lines.')
 
 X = np.array(v,dtype=object)
-#print(X)
+print(X)
 
-z = []
-for i in range(0,400):
-    z.append(0)  # classes of each sample
-#print(z)
-y = np.array(z,dtype=object)
-#print(y)
+column_trans = ColumnTransformer(
+			[('source', OneHotEncoder(dtype='int'),[1,2])],
+     remainder='passthrough')
+
+Y = column_trans.fit_transform(X)
+print(Y)
 
 y = np.zeros(400,dtype=np.int64)
 
-clf.fit(X,y)
+clf.fit(Y,y)
+
 #print(clf.fit(X,y))
 #print(clf.predict(X))
 #print(clf.predict([[4, 5, 6], [14, 15, 16]]))
