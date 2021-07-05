@@ -38,7 +38,9 @@ Y = column_trans.fit_transform(X)
 print(Y)
 
 def main():
+	x = str(sys.argv[1])
 	print("Testing the main() test client with command line arguments to test module.")
+	print(x)
 
 if __name__ == '__main__' : main()
 
