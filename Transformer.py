@@ -1,3 +1,4 @@
+import sys
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
@@ -35,6 +36,11 @@ column_trans = ColumnTransformer(
 
 Y = column_trans.fit_transform(X)
 print(Y)
+
+def main():
+	print("Testing the main() test client with command line arguments to test module.")
+
+if __name__ == '__main__' : main()
 
 """
 A = np.zeros((400,4),'U7')
