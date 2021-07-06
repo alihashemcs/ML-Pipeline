@@ -1,9 +1,4 @@
 import sys
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.feature_extraction.text import CountVectorizer
 import csv
 from array import *
 from numpy import *
@@ -44,7 +39,6 @@ def main():
 	X = pythonListToNumpyArray(csvToPythonList(x))
 	print(X)
 	print("Testing the main() test client with command line arguments to test module.")
-	print(157)
 	print(x)
 
 if __name__ == '__main__' : main()

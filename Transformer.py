@@ -10,7 +10,6 @@ from numpy import *
 import numpy as np
 import parseCSV
 
-
 # Transform columns in numpy array
 
 #Transform columns in numpy array
@@ -24,11 +23,12 @@ def transformColsNumpyArray(a):
 
 def main():
 	x = str(sys.argv[1])
-	X = pythonListToNumpyArray(csvToPythonList(x))
+	X = parseCSV.pythonListToNumpyArray(parseCSV.csvToPythonList(x))
+	print(X)
 	Y = transformColsNumpyArray(X)
 	#print(Y)
 	print("Testing the main() test client with command line arguments to test module.")
-	print(157)
+	print(336)
 	print(x)
 
 if __name__ == '__main__' : main()
