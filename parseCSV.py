@@ -36,7 +36,8 @@ def pythonListToNumpyArray(l):
 
 def main():
 	x = str(sys.argv[1])
-	X = pythonListToNumpyArray(csvToPythonList(x))
+	y = csvToPythonList(x)
+	X = pythonListToNumpyArray(y)
 	print(X)
 	print("Testing the main() test client with command line arguments to test module.")
 	print(x)

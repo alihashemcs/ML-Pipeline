@@ -1,13 +1,8 @@
 import sys
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import CountVectorizer
-import csv
-from array import *
-from numpy import *
-import numpy as np
 import parseCSV
 
 # Transform columns in numpy array
@@ -23,10 +18,11 @@ def transformColsNumpyArray(a):
 
 def main():
 	x = str(sys.argv[1])
-	X = parseCSV.pythonListToNumpyArray(parseCSV.csvToPythonList(x))
+	y = parseCSV.csvToPythonList(x)
+	X = parseCSV.pythonListToNumpyArray(y)
 	print(X)
 	Y = transformColsNumpyArray(X)
-	#print(Y)
+	print(Y)
 	print("Testing the main() test client with command line arguments to test module.")
 	print(336)
 	print(x)

@@ -7,30 +7,10 @@ from array import *
 from numpy import *
 import numpy as np
 #import pandas as pd
+import parseCSV
+import Transformer
 
-def main():
-    print("main hello")
-
-def parseCSV():
-    w = [''] * 4
-    v = [w] * 400
-    with open('dataCSV1.csv') as dataCSV1:
-        csv_reader = csv.reader(dataCSV1, delimiter=',')
-        line_count = 0
-        count = 0
-        for row in csv_reader:
-            if (count != 400):
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    v.insert(count, [row[1], row[2], row[4], row[5]])
-                    line_count += 1
-                    count += 1
-                    v.remove(['', '', '', ''])
-        print(f'Processed {line_count - 1} lines.')
-        return v
-
-def RFC():
+def RFC(n):
     c = parseCSV()
     X = np.array(c, dtype=object)
     #print(X)
@@ -41,6 +21,19 @@ def RFC():
     y = np.array(z, dtype=object)
     clf.fit(X, y)
     #print(clf.predict(X))
+
+def main():
+	x = str(sys.argv[1])
+	y = parseCSV.csvToPythonList(x)
+	X = parseCSV.pythonListToNumpyArray(y)
+	print(X)
+	Y = transformColsNumpyArray(X)
+	#print(Y)
+	print("Testing the main() test client with command line arguments to test module.")
+	print(336)
+	print(x)
+
+if __name__ == '__main__' : main()
 
 main()
 #parseCSV()
