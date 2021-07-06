@@ -9,37 +9,53 @@ from array import *
 from numpy import *
 import numpy as np
 
-w = ['']*4
-v = [w]*400
+# Import data from csv
+# then create numpy array from python list
+# then transform columns in numpy array
 
-with open('dataCSV1.csv') as dataCSV1:
-    csv_reader = csv.reader(dataCSV1, delimiter=',')
-    line_count = 0
-    count = 0
-    for row in csv_reader:
-        if(count!=400):
-            if line_count == 0:
-                line_count += 1
-            else:
-                v.insert(count,[row[1],row[2],row[4],row[5]])
-                line_count += 1
-                count += 1
-                v.remove(['', '', '', ''])
-    print(f'Processed {line_count-1} lines.')
+#Gets name of csv file and puts data into python list
+# 400 rows, columns 1,2,4,5 (starting at index 0)
+def csvToPythonList(s):
+	w = ['']*4
+	v = [w]*400
 
-X = np.array(v,dtype=object)
-print(X)
+	with open(s) as dataCSV1:
+		csv_reader = csv.reader(dataCSV1, delimiter=',')
+		line_count = 0
+		count = 0
+		for row in csv_reader:
+			if(count!=400):
+				if line_count == 0:
+					line_count += 1
+				else:
+					v.insert(count,[row[1],row[2],row[4],row[5]])
+					line_count += 1
+					count += 1
+					v.remove(['', '', '', ''])
+		print(f'Processed {line_count-1} lines.')
+	return v
 
-column_trans = ColumnTransformer(
-			[('source', OneHotEncoder(dtype='int'),[1])],
-     remainder='passthrough')
+#Python list to numpy array
+def pythonListToNumpyArray(l):
+	X = np.array(l,dtype=object)
+	return X
 
-Y = column_trans.fit_transform(X)
-print(Y)
+#Transform columns in numpy array
+def transformColsNumpyArray(a):
+	column_trans = ColumnTransformer(
+				[('source', OneHotEncoder(dtype='int'),[1])],
+		 remainder='passthrough')
+
+	Y = column_trans.fit_transform(a)
+	return Y
 
 def main():
 	x = str(sys.argv[1])
+	X = pythonListToNumpyArray(csvToPythonList(x))
+	Y = transformColsNumpyArray(X)
+	#print(Y)
 	print("Testing the main() test client with command line arguments to test module.")
+	print(157)
 	print(x)
 
 if __name__ == '__main__' : main()
