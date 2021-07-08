@@ -31,6 +31,23 @@ class Network:
 			else:
 				o = self._layers[i].calculateOutputs(o)
 		return o
+	
+	#propagate errors backward through network
+	def propagateErrorsBackward(self,t,ek,w):
+		e = []
+		j = 0
+		i = len(self._layers)-1
+		while i >= 0:
+			#output layer
+			if(i == len(self._layers)-1):
+				e.insert(j,self._layers[i].calculateErrorsOutputLayer(t))
+				j += 1
+				
+			#hidden layers
+			else:
+				
+				e.insert(j,self._layers[i].calculateErrorsHiddenLayer( ,e[j-1]))
+				j +=1
 
 def main():
 	x = str(sys.argv[1])

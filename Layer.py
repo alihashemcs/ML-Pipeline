@@ -18,7 +18,19 @@ class Layer:
 		for i in range(len(self._units)):
 			o.insert(i,self._units[i].calculateOutput(x))
 		return o
-
+	
+	def calculateErrorsOutputLayer(self,t):
+		e = []
+		for i in range(len(self._units)):
+			e.insert(i,self._units[i].calculateErrorOutputLayer(t[i]))
+		return e
+	
+	def calculateErrorsHiddenLayer(self,wkh,ek):
+		e = []
+		for i in range(len(self._units)):
+			e.insert(i,self._units[i].calculateErrorHiddenLayer(wkh,ek))
+		return e
+	
 def main():
 	x = str(sys.argv[1])
 	print("Testing the main() test client with command line arguments to test module.")

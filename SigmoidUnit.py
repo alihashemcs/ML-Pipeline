@@ -26,10 +26,19 @@ class SigmoidUnit:
 		self._out = o
 		return o
 	
-	def updateWeights(self,t,x):
+	def updateWeights(self,t,x,err):
 		o = calculateOutput(x)
 		for i in range(len(x)):
-			self._wi[i] += ( (t-o)*x[i]*self._learningrate )
+			self._wi[i] += ( err*x[i]*self._learningrate )
+		
+	def calculateErrorOutputLayer(self,t):
+		return (self._out)*(1-self._out)*(t-self._out)
+	
+	def calculateErrorHiddenLayer(self,wkh,ek):
+		e = 0
+		for i in range(len(wkh)):
+			e += wkh[i]*ek[i]
+		return e*self._out*(1-self._out)
 
 def main():
 	x = str(sys.argv[1])
