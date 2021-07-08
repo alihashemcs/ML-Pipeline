@@ -33,7 +33,7 @@ class Network:
 		return o
 	
 	#propagate errors backward through network
-	def propagateErrorsBackward(self,t,ek,w):
+	def propagateErrorsBackward(self,x,t,ek,w):
 		e = []
 		j = 0
 		i = len(self._layers)-1
@@ -42,12 +42,29 @@ class Network:
 			if(i == len(self._layers)-1):
 				e.insert(j,self._layers[i].calculateErrorsOutputLayer(t))
 				j += 1
-				
+				"""
+				for k in range(len(self._layers[i]._units)):
+					self._layers[i]._units[k].update
+				"""
 			#hidden layers
 			else:
 				
-				e.insert(j,self._layers[i].calculateErrorsHiddenLayer( ,e[j-1]))
+				wt1 = []
+				wq1 = 0
+				for z in range(len(self._layers[i]._units)):
+					wt = []
+					wq = 0
+					for q in range(len(self._layers[i+1]._units)):
+						wt.insert( wq ,self._layers[i+1]._units[q]._wi[z])
+						wq += 1
+					wt1.insert( wq1 , wt)
+					wq1 += 1
+				
+					#self._layers[i+1]._units[z]._wi[z]
+				e.insert(j,self._layers[i].calculateErrorsHiddenLayer( wt1 ,e[j-1]))
 				j +=1
+				
+			i -= 1
 
 def main():
 	x = str(sys.argv[1])

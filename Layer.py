@@ -28,7 +28,7 @@ class Layer:
 	def calculateErrorsHiddenLayer(self,wkh,ek):
 		e = []
 		for i in range(len(self._units)):
-			e.insert(i,self._units[i].calculateErrorHiddenLayer(wkh,ek))
+			e.insert(i,self._units[i].calculateErrorHiddenLayer(wkh[i],ek))
 		return e
 	
 def main():
