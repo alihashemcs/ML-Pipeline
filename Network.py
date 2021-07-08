@@ -36,7 +36,7 @@ def main():
 	x = str(sys.argv[1])
 	print("Testing the main() test client with command line arguments to test module.")
 	print(x)
-	n = Network(2,2,1,2,0.5)
+	n = Network(2,3,1,2,0.5)
 	for i in range(len(n._layers)):
 		print(n._layers[i])
 	print(n.propagateForward([2,3]))
