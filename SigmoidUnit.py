@@ -7,6 +7,8 @@ class SigmoidUnit:
 		for i in range(len(w)):
 			self._wi.insert(i,w[i])
 		self._learningrate = l
+		self._in = []
+		self._out = 0
 		
 	
 	def linearCombinationInputs(self,x):
@@ -21,6 +23,7 @@ class SigmoidUnit:
 		o = math.exp(y)
 		o += 1.0
 		o = (1.0)/o
+		self._out = o
 		return o
 	
 	def updateWeights(self,t,x):
