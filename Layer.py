@@ -13,7 +13,11 @@ class Layer:
 			s = SigmoidUnit.SigmoidUnit(w,l)
 			self._units.insert(i,s)
 	
-	
+	def calculateOutputs(self,x):
+		o = []
+		for i in range(len(self._units)):
+			o.insert(i,self._units[i].calculateOutput(x))
+		return o
 
 def main():
 	x = str(sys.argv[1])
@@ -22,5 +26,6 @@ def main():
 	l = Layer(2,2,0.5)
 	for i in range(2):
 		print(l._units[i])
+	print(l.calculateOutputs([2,3]))
 
 if __name__ == '__main__' : main()
