@@ -1,18 +1,44 @@
 import sys
 import SigmoidUnit
+import Layer
 
 class Network:
-	def __init__():
-		self._units = []
-		
+	#create network of n layers
+	#hidden layers of m units, output layer of l units
+	def __init__(self,n,m,l,numnetworkinputs,learningrate):
+		self._layers = []
+		for i in range(n):
+			#hidden layers
+			if(i < n-1):
+				hlayer = Layer.Layer(m,numnetworkinputs,learningrate)
+				self._layers.insert(i,hlayer)
+			#output layer
+			else:
+				olayer = Layer.Layer(l,m,learningrate)
+				self._layers.insert(i,olayer)
+			
+	#propagate input forward through network
+	def propagateForward(self,x):
+		o = []
+		for i in range(len(self._layers)):
+			#first layer
+			if(i == 0):
+				o = self._layers[i].calculateOutputs(x)
+			#hidden layers
+			elif(i < len(self._layers)-1):
+				o = self._layers[i].calculateOutputs(o)
+			#output layer
+			else:
+				o = self._layers[i].calculateOutputs(o)
+		return o
 
 def main():
 	x = str(sys.argv[1])
 	print("Testing the main() test client with command line arguments to test module.")
 	print(x)
-	#print(linearCombinationInputs([1,2,3],[4,5,6]))
-	s = SigmoidUnit([1,1],0.5)
-	#print(s.linearCombinationInputs([2,3]))
-	print(s.calculateOutput([2,3]))
+	n = Network(2,2,1,2,0.5)
+	for i in range(len(n._layers)):
+		print(n._layers[i])
+	print(n.propagateForward([2,3]))
 
 if __name__ == '__main__' : main()
