@@ -1,34 +1,38 @@
 import sys
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import cross_validate
 import parseCSV
 import Transformer
+import numpy as np
 
 #Create a RandomForestClassifier model
-def RandomForestClassifier(Y):
+def createRandomForestClassifier(X,y):
 	clf = RandomForestClassifier(random_state=0)
-	y = np.zeros(400,dtype=np.int64)
-	clf.fit(Y,y)
+	#y = np.zeros(400,dtype=np.int64)
+	clf.fit(X,y)
 	return clf
 
 #print(clf.fit(X,y))
 #print(clf.predict(X))
 #print(clf.predict([[4, 5, 6], [14, 15, 16]]))
-print("test")
 
 def main():
 	x = str(sys.argv[1])
-	y = parseCSV.csvToPythonList(x)
+	X = parseCSV.csvToPythonList(x)
+	X = parseCSV.pythonListToNumpyArray(X)
+	X = parseCSV.numpyArrayToPandasDF(X)
 	
-	X = parseCSV.pythonListToNumpyArray(y)
 	print(X)
-	Y = transformColsNumpyArray(X)
-	
+	X = Transformer.transformColsNumpyArray(X)
 	y = np.zeros(400,dtype=np.int64)
 	
-	#print(Y)
+	clf = createRandomForestClassifier(X,y)
+	print(clf)
+	print(clf.predict(X))
+	
+	result = cross_validate(clf,X,y)
+	
 	print("Testing the main() test client with command line arguments to test module.")
-	print(336)
 	print(x)
 
 if __name__ == '__main__' : main()
