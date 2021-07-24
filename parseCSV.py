@@ -3,6 +3,7 @@ import csv
 from array import *
 from numpy import *
 import numpy as np
+import pandas as pd
 
 # Import data from csv
 # then create numpy array from python list
@@ -34,6 +35,13 @@ def pythonListToNumpyArray(l):
 	X = np.array(l,dtype=object)
 	return X
 
+#numpy array to pandas dataframe
+def numpyArrayToPandasDF(l):
+	X = pd.DataFrame(l,columns=['time','sourceIP','protocol','length'])
+	X['time'] = X['time'].astype('float')
+	X['length'] = X['length'].astype('int')
+	return X
+
 def main():
 	x = str(sys.argv[1])
 	y = csvToPythonList(x)
@@ -41,6 +49,9 @@ def main():
 	print(X)
 	print("Testing the main() test client with command line arguments to test module.")
 	print(x)
+	Y = numpyArrayToPandasDF(X)
+	print(Y)
+	print(Y.dtypes)
 
 if __name__ == '__main__' : main()
 

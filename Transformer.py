@@ -12,6 +12,8 @@ def transformColsNumpyArray(a):
 	column_trans = ColumnTransformer(
 				[('source', OneHotEncoder(dtype='int'),[1,2])],
      remainder='passthrough')
+	
+	
 
 	Y = column_trans.fit_transform(a)
 	return Y
@@ -24,7 +26,6 @@ def main():
 	Y = transformColsNumpyArray(X)
 	print(Y)
 	print("Testing the main() test client with command line arguments to test module.")
-	print(336)
 	print(x)
 
 if __name__ == '__main__' : main()
