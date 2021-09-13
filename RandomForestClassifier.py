@@ -22,17 +22,21 @@ def main():
 	X = parseCSV.pythonListToNumpyArray(X)
 	X = parseCSV.numpyArrayToPandasDF(X)
 	
-	print(X)
+	#print(X)
 	X = Transformer.transformColsNumpyArray(X)
-	y = np.zeros(400,dtype=np.int64)
+	y = np.zeros(1000,dtype=np.int64)
+	print(X)
+	print(y)
 	
 	clf = createRandomForestClassifier(X,y)
-	print(clf)
+	#print(clf)
+
 	print(clf.predict(X))
 	
 	result = cross_validate(clf,X,y)
 	
 	print("Testing the main() test client with command line arguments to test module.")
-	print(x)
+	print(result)
+
 
 if __name__ == '__main__' : main()

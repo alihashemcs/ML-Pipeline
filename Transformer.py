@@ -19,17 +19,17 @@ def transformColsNumpyArray(a):
 	#discretize the time feature/column
 	t1 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [1])]
 	#discretize the time feature/column
-	#encode sourceIP and protocol features
-	t2 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [0]),
-			('source_protocol_enc', OrdinalEncoder(), [1,2])]
+	#encode all others
+	t2 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [1]),
+			('source_protocol_enc', OrdinalEncoder(), [0,2,3,4,5,6])]
 	#discretize the time feature/column
 	#normalize the length feature/column
 	#encode sourceIP and protocol features
-	t3 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [0]),
+	t3 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [1]),
 			('source_protocol_enc', OrdinalEncoder(), [1,2]),
 			('length_norm', Normalizer(), [3])]
 	
-	column_trans = ColumnTransformer(transformers=t1,
+	column_trans = ColumnTransformer(transformers=t2,
 									remainder='passthrough')
 
 	Y = column_trans.fit_transform(a)
