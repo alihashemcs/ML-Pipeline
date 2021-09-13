@@ -11,22 +11,22 @@ import pandas as pd
 #Gets name of csv file and puts data into python list
 # 400 rows, columns 1,2,4,5 (starting at index 0)
 def csvToPythonList(s):
-	w = ['']*4
-	v = [w]*400
+	w = ['']*7
+	v = [w]*1000
 
 	with open(s) as dataCSV1:
 		csv_reader = csv.reader(dataCSV1, delimiter=',')
 		line_count = 0
 		count = 0
 		for row in csv_reader:
-			if(count!=400):
+			if(count!=1000):
 				if line_count == 0:
 					line_count += 1
 				else:
-					v.insert(count,[row[1],row[2],row[4],row[5]])
+					v.insert(count,[row[0],row[1],row[2],row[3],row[4],row[5],row[6]])
 					line_count += 1
 					count += 1
-					v.remove(['', '', '', ''])
+					v.remove(['', '', '', '','','',''])
 		print(f'Processed {line_count-1} lines.')
 	return v
 
@@ -37,9 +37,9 @@ def pythonListToNumpyArray(l):
 
 #numpy array to pandas dataframe
 def numpyArrayToPandasDF(l):
-	X = pd.DataFrame(l,columns=['time','sourceIP','protocol','length'])
-	X['time'] = X['time'].astype('float')
-	X['length'] = X['length'].astype('int')
+	X = pd.DataFrame(l,columns=['No.','Time','SourceIP','Destination','Protocol','Length','Info'])
+	X['Time'] = X['Time'].astype('float')
+	X['Length'] = X['Length'].astype('int')
 	return X
 
 def main():
