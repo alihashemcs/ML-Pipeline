@@ -49,25 +49,3 @@ def main():
 
 if __name__ == '__main__' : main()
 
-"""
-A = np.zeros((400,4),'U7')
-
-print(A.dtype,A.shape)
-
-for i in range(0,400):
-	for j in range(0,4):
-		A[i][j] = "hello"
-		
-print(A)
-"""
-
-
-
-"""
-print("before preprocessing: \n",X)
-column_trans = ColumnTransformer(
-[('enc1', OneHotEncoder(dtype='int'),[1])],
-remainder='drop')
-column_trans.fit_transform(X)
-print("after preprocessing: \n",X)
-"""
