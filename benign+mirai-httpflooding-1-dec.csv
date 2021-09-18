@@ -1,3 +1,4 @@
+// 2247 benign + 1672 mirai httpflooding-1-dec
 "No.","Time","Source","Destination","Protocol","Length","Info"
 "786","1.758387","223.39.118.176","192.168.0.23","TLSv1.2","490","Application Data"
 "825","1.902345","223.39.123.194","192.168.0.24","TLSv1","960","Application Data, Application Data"

@@ -12,22 +12,22 @@ import pandas as pd
 # 400 rows, columns 1,2,4,5 (starting at index 0)
 def csvToPythonList(s):
 	w = ['']*7
-	v = [w]*1000
+	v = [w]*3919
 
 	with open(s) as dataCSV1:
 		csv_reader = csv.reader(dataCSV1, delimiter=',')
 		line_count = 0
 		count = 0
 		for row in csv_reader:
-			if(count!=1000):
-				if line_count == 0:
+			if(count!=3919):
+				if line_count <= 1:
 					line_count += 1
 				else:
 					v.insert(count,[row[0],row[1],row[2],row[3],row[4],row[5],row[6]])
 					line_count += 1
 					count += 1
 					v.remove(['', '', '', '','','',''])
-		print(f'Processed {line_count-1} lines.')
+		print(f'Processed {line_count-2} lines.')
 	return v
 
 #Python list to numpy array
