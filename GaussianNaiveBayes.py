@@ -31,7 +31,13 @@ def main():
 
 #Test Model using cross validation
 	result = cross_validate(gnb,X,y)
-	print(result)
+	test_score = result["test_score"]
+	avg = 0
+	for i in test_score:
+		avg += i
+	avg = avg / len(test_score)
+	print("CV Result: \n", result)
+	print("Average Test Score: \n", avg)
 
 #Test model with test data (mirai-httpflooding-2-dec.csv)
 	z = str(sys.argv[2])
