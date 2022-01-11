@@ -1,8 +1,8 @@
 import sys
 from diffprivlib.models import GaussianNB
 from sklearn.model_selection import cross_validate
-import parseCSV
-import Transformer
+import aparseCSV
+import aTransformer
 import numpy as np
 import pandas as pd
 import diffprivlib as ibmdp
@@ -30,7 +30,7 @@ def main():
 	print("Labels\n", y)
 	#Build model with data and labels
 	dpgnb = createDPGaussianNBModel(X,y)
-	
+
 #Test Model using cross validation
 	result = cross_validate(dpgnb,X,y)
 	test_score = result["test_score"]

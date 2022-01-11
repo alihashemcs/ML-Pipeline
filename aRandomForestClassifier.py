@@ -1,8 +1,8 @@
 import sys
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_validate
-import parseCSV
-import Transformer
+import aparseCSV
+import aTransformer
 import numpy as np
 
 #Create a RandomForestClassifier model
@@ -21,20 +21,20 @@ def main():
 	X = parseCSV.csvToPythonList(x)
 	X = parseCSV.pythonListToNumpyArray(X)
 	X = parseCSV.numpyArrayToPandasDF(X)
-	
+
 	#print(X)
 	X = Transformer.transformColsNumpyArray(X)
 	y = np.zeros(1000,dtype=np.int64)
 	print(X)
 	print(y)
-	
+
 	clf = createRandomForestClassifier(X,y)
 	#print(clf)
 
 	print(clf.predict(X))
-	
+
 	result = cross_validate(clf,X,y)
-	
+
 	print("Testing the main() test client with command line arguments to test module.")
 	print(result)
 

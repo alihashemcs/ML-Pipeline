@@ -6,7 +6,7 @@ from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.feature_extraction.text import CountVectorizer
-import a-parseCSV
+import aparseCSV
 
 #Transform columns in numpy array
 def transformColsNumpyArray(a):

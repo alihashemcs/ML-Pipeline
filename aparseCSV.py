@@ -27,7 +27,7 @@ def csvToPythonList(s):
 					line_count += 1
 					count += 1
 					v.remove(['', '', '', '','','',''])
-		print('Processed' + {line_count-2} + 'lines.')
+		print('Processed' + str(line_count-2) + 'lines.')
 	return v
 
 #Python list to numpy array

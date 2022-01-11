@@ -12,11 +12,9 @@ from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.feature_extraction.text import CountVectorizer
-import parseCSV
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import cross_validate
-import Transformer
 
 from diffprivlib.models import GaussianNB
 import diffprivlib as ibmdp
@@ -51,7 +49,7 @@ def csvToPythonList(s):
 					line_count += 1
 					count += 1
 					v.remove(['', '', '', '','','',''])
-		print(f'Processed {line_count-2} lines.')
+		print('Processed' + str(line_count-2) + 'lines.')
 	return v
 
 #Python list to numpy array

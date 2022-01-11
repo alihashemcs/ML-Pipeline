@@ -2,7 +2,7 @@ import sys
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import cross_validate
 import parseCSV
-import Transformer
+import aTransformer
 import numpy as np
 
 #Create a GaussianNB model
