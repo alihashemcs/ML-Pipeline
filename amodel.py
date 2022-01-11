@@ -64,7 +64,38 @@ def numpyArrayToPandasDF(l):
 	X['Length'] = X['Length'].astype('int')
 	return X
 
+######################################################################
+##### Transformer #####
+######################################################################
+#Transform columns in numpy array
+def transformColsNumpyArray(a):
+	#discretize the time feature/column
+	#normalize the length feature/column
+	#encode sourceIP and protocol features
+	t = [('time_disc', KBinsDiscretizer(n_bins=10, encode='onehot'), [0]),
+		('source_protocol_enc', OneHotEncoder(dtype='int'), [1,2]),
+		('length_norm', Normalizer(), [3])]
+	#discretize the time feature/column
+	t1 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [1])]
+	#discretize the time feature/column
+	#encode all others
+	t2 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [1]),
+			('source_protocol_enc', OrdinalEncoder(), [0,2,3,4,5,6])]
+	#discretize the time feature/column
+	#normalize the length feature/column
+	#encode sourceIP and protocol features
+	t3 = [('time_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [1]),
+			('source_protocol_enc', OrdinalEncoder(), [1,2]),
+			('length_norm', Normalizer(), [3])]
+
+	column_trans = ColumnTransformer(transformers=t2,
+									remainder='passthrough')
+
+	Y = column_trans.fit_transform(a)
+	return Y
+
 def main():
+    #################### parseCSV ####################
 	dataFileName = str(sys.argv[1])
 	pythonList = csvToPythonList(dataFileName)
 	npArray = pythonListToNumpyArray(pythonList)
@@ -74,5 +105,10 @@ def main():
 	pandasDF = numpyArrayToPandasDF(npArray)
 	print(pandasDF)
 	print(pandasDF.dtypes)
+
+    #################### Transformer ####################
+	transformedData = transformColsNumpyArray(pandasDF)
+	print(transformedData)
+	print("Testing the main() test client with command line arguments to test module.")
 
 if __name__ == '__main__' : main()
