@@ -8,6 +8,9 @@ from sklearn.preprocessing import OrdinalEncoder
 from sklearn.feature_extraction.text import CountVectorizer
 import aparseCSV
 
+######################################################################
+##### Transformer #####
+######################################################################
 #Transform columns in numpy array
 def transformColsNumpyArray(a):
 	#discretize the time feature/column

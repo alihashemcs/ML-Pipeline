@@ -5,6 +5,9 @@ from numpy import *
 import numpy as np
 import pandas as pd
 
+######################################################################
+##### parseCSV #####
+######################################################################
 # Import data from csv
 # then create numpy array from python list
 
