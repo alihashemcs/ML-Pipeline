@@ -40,9 +40,9 @@ def transformColsNumpyArray(a):
 
 def main():
 	x = str(sys.argv[1])
-	y = parseCSV.csvToPythonList(x)
-	X = parseCSV.pythonListToNumpyArray(y)
-	X = parseCSV.numpyArrayToPandasDF(X)
+	y = aparseCSV.csvToPythonList(x)
+	X = aparseCSV.pythonListToNumpyArray(y)
+	X = aparseCSV.numpyArrayToPandasDF(X)
 	print(X)
 	#print(X.dtypes)
 	Y = transformColsNumpyArray(X)

@@ -16,6 +16,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.cluster import KMeans
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import precision_score, recall_score, make_scorer
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import make_pipeline
@@ -23,24 +24,19 @@ from sklearn.pipeline import Pipeline
 from diffprivlib.models import GaussianNB
 import diffprivlib as ibmdp
 
-import aparseCSV
-import aTransformer
+# dbenignmiraihttpflooding1dec 2247 benign 1672 malicious
 
 def main():
     ######################################################################
     #################### parseCSV ####################
     ######################################################################
 	dataFileName = str(sys.argv[1])
-	pythonList = aparseCSV.csvToPythonList(dataFileName)
-	npArray = aparseCSV.pythonListToNumpyArray(pythonList)
-	#print(npArray)
-	#print("Testing the main() test client with command line arguments to test module.")
-	print(dataFileName)
-	pandasDF = aparseCSV.numpyArrayToPandasDF(npArray)
-	#print(pandasDF)
-	#print(pandasDF.dtypes)
+	df = pd.read_csv(dataFileName)
+	#df.astype({'Source': 'float64'})
+	print(df)
+	print(df.dtypes)
     #################### Create X and y ####################
-	X = pandasDF
+	X = df
 	y1 = np.zeros(2247,dtype=int8)		#first 2247 packets are benign
 	y2 = np.ones(1672,dtype=int8)		#second 1672 packets are malicious
 	y = pd.DataFrame(data=np.concatenate((y1,y2), axis=0), columns=["Benign/Malicious"], dtype=np.int8)
@@ -50,30 +46,34 @@ def main():
 	print(y)
 	print(y.dtypes)
 
-    ######################################################################
-    #################### Transformer ####################
-    ######################################################################
-	#transformedData = aTransformer.transformColsNumpyArray(pandasDF)
-	#print(transformedData)
-	#print("Testing the main() test client with command line arguments to test module.")
-
-    ######################################################################
-    #################### Create Pipeline ####################
-    ######################################################################
-	myPipeline = Pipeline([
-		("scale", StandardScaler()),
-		("model", GaussianNB())
-	],verbose=True)
-	[print(key,' : ',value) for key,value in myPipeline.get_params().items()]
-	#myPipeline.fit(X,y)
+	######################################################################
+	#################### Grid Search - LogisticRegression ####################
+	######################################################################
+	LRmodel = LogisticRegression(class_weight={0: 1, 1: 2}, max_iter=1000)
+	LRmodel.fit(X,y).predict(X).sum()
+	grid = GridSearchCV(
+					estimator=LogisticRegression(max_iter=1000),
+					param_grid={'class_weight': [{0: 1, 1: v} for v in np.linearspace(1,20,30)]},
+					scoring={'precision': make_scorer(precision_score), 'recall_score': make_scorer(recall_score)},
+					refit='precision',
+					return_train_score=True,
+					cv=10,
+					n_jobs=-1
+			)
+	grid.fit(X,y)
+	print(pd.DataFrame(grid.cv_results_))
 
 	######################################################################
-    #################### Grid Search Model Selection ####################
-    ######################################################################
-	myModel = GridSearchCV(estimator=myPipeline,
-				param_grid={'model__epsilon' : [1.0,1.1,1.2,1.3,1.4,1.5]},
-				cv=3)
-	#myModel.fit(X,y)
-	#pd.DataFrame(myModel.cv_results_)
+	#################### Plotting Results ####################
+	######################################################################
+	plt.figure(figsize(12,4))
+	df = pd.DataFrame(grid.cv_results_)
+	for score in ['mean_test_recall', 'mean_test_precision']:
+		plt.plot(
+				[_[1] for _ in df['param_class_weight']],
+				df[score],
+				label=score
+		)
+	plt.legend()
 
 if __name__ == '__main__' : main()
