@@ -17,13 +17,16 @@ from sklearn.cluster import KMeans
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import precision_score, recall_score, make_scorer
+from sklearn.metrics import RocCurveDisplay
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import learning_curve
+from sklearn.model_selection import validation_curve
 from sklearn.pipeline import make_pipeline
 from sklearn.pipeline import Pipeline
-from diffprivlib.models import GaussianNB
-import diffprivlib as ibmdp
+#from diffprivlib.models import GaussianNB
+#import diffprivlib as ibmdp
 
 # dbenignmiraihttpflooding1dec 2247 benign 1672 malicious
 
@@ -39,12 +42,11 @@ def main():
 	y1 = np.zeros(2247,dtype=int64)		#first 2247 packets are benign
 	y2 = np.ones(1672,dtype=int64)		#second 1672 packets are malicious
 	y = pd.DataFrame(data=np.concatenate((y1,y2), axis=0), columns=["Benign/Malicious"], dtype=np.int64)
-	print("X and y")
-	print(X)
-	print(X.dtypes)
-	print(y)
-	print(y.dtypes)
-
+	#print("X and y")
+	#print(X)
+	#print(X.dtypes)
+	#print(y)
+	#print(y.dtypes)
 	#print(X.nunique(axis='rows', dropna=False))
 
 	######################################################################
@@ -52,53 +54,37 @@ def main():
 	######################################################################
 	#normalize length, no., time features
 	#encode Source, Destination, Protocol, Info features
-	t1_norm = [('normalizer', Normalizer(), [0,1,5]),
-				('src_dest_prt_inf_enc', OneHotEncoder(handle_unknown='ignore'), [2,3,4,6])]
-	"""normalizer = Normalizer()
-	transformedX = normalizer.fit(X)
-	transformedX = normalizer.transform(X)
-	colTransformer1 = ColumnTransformer(transformers=t1_norm,
-										remainder='passthrough')
-"""
+	t1 = [('normalizer', Normalizer(), [0,1,5]),
+		('encoder', OneHotEncoder(handle_unknown='ignore'), [2,3,4,6])]
+
 	#discretize no., time features
-	#encode Source, Destination, Protocol, Info features
-	t1 = [('no_time_disc', KBinsDiscretizer(n_bins=10, encode='onehot', strategy='uniform'), [0,1])]
-	t2 = [('src_dest_prt_inf_enc', OneHotEncoder(handle_unknown='ignore'), [2,3,4,6])]
-	t3 = [('time_no_disc', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [0,1,5])]
+	t2 = [('discretizer', KBinsDiscretizer(n_bins=10, encode='ordinal', strategy='uniform'), [0,1,5])]
 	#setting sparse_threshold=0.3 (or any higher value)
 	#produces sparse matrix, set to 0 to produce dense matrix.
 	#can also produce dense matrix by setting sparse=False in the OneHotEncoder
 	#OneHotEncoder produces 385 columns, +3 more for passthrough
 	#^ scipy.sparse matrices
-	"""colTransformer = ColumnTransformer(transformers=t3,
-									remainder='passthrough',
-									sparse_threshold=0.3,
-									verbose=True)
-	transformedX1 = colTransformer.fit_transform(X)
-	#transformedX1 = pd.DataFrame(transformedX1)
-	print(colTransformer)
-	print(transformedX1)
-	#print(colTransformer.get_feature_names_out())
-	#print(transformedX1.dtypes)
-"""
-	#normalize No., Time, Length attributes
-	#then discretize No., Time and encode Source, Destination, Protocol, Info
-	estimators = [('normalize', ColumnTransformer(transformers=t1_norm, remainder='passthrough', sparse_threshold=0)),
-				('disc_enc', ColumnTransformer(transformers=t3, remainder='passthrough', sparse_threshold=0)),
+
+	estimators = [('normalize_enc', ColumnTransformer(transformers=t1, remainder='passthrough', sparse_threshold=0)),
+				('disc', ColumnTransformer(transformers=t2, remainder='passthrough', sparse_threshold=0)),
 				('clf', GaussianNB())]
-	myPipeline = Pipeline(estimators,
-						verbose=True)
-	[print(key,' : ',value) for key,value in myPipeline.get_params().items()]
+	myPipeline = Pipeline(steps=estimators, verbose=True)
+	#[print(key,' : ',value) for key,value in myPipeline.get_params().items()]
 
-	X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
-	myPipeline.fit(X_train, y_train)
-	print(myPipeline.score(X_test, y_test))
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=0)
+	#myPipeline.fit(X_train, y_train)
+	#print(myPipeline.score(X_test, y_test))
 
+	parameters = [
+			{'disc__discretizer__n_bins': [2, 5, 10, 20], 'disc__discretizer__encode': ('onehot', 'onehot-dense', 'ordinal')}
+	]
+	myGS = GridSearchCV(estimator=myPipeline, param_grid=parameters, n_jobs=-1, error_score=0)
+	myGS.fit(X_train, y_train.values.ravel())
 
 	######################################################################
 	#################### Plotting Results ####################
 	######################################################################
-"""	plt.figure(figsize(12,4))
+	"""	plt.figure(figsize(12,4))
 	df = pd.DataFrame(grid.cv_results_)
 	for score in ['mean_test_recall', 'mean_test_precision']:
 		plt.plot(
@@ -107,5 +93,7 @@ def main():
 				label=score
 		)
 	plt.legend()"""
+
+	#disp = RocCurveDisplay.from_estimator(myGS, X_test, y_test)
 
 if __name__ == '__main__' : main()
